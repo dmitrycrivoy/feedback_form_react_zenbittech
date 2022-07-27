@@ -7,7 +7,7 @@ import { Main } from './Components/Main.style';
 import { Map, MapImg } from './Components/Map.style';
 import { Social, SocialList, SocialListItem, SocialListItemImg } from './Components/Social.style';
 import Axios from "axios"
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 function App() {
 
@@ -15,8 +15,11 @@ function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
+  const [nameInputBorder, setNameInputBorder] = useState(false);
+  const [emailInputBorder, setEmailInputBorder] = useState(false);
+  const [messageInputBorder, setMessageInputBorder] = useState(false);
+
   const submitFeedback = () => {
-    // console.log(name, email, message);
     Axios.post('http://qr96rq.alwaysdata.net/api/insert',
       {
         name: name, 
@@ -24,7 +27,20 @@ function App() {
         message: message
       }
       ).then((res) => {
-        /*console.log(res)*/
+        console.log(res);
+        console.log(res.data);
+        if (res.data.error) {
+          console.log(res.data.status)
+          if (res.data.status === 11) {
+            setNameInputBorder(!nameInputBorder)
+          }
+          else if (res.data.status === 12) {
+            setEmailInputBorder(!emailInputBorder)
+          }
+          else if (res.data.status === 13) {
+            setMessageInputBorder(!messageInputBorder)
+          }
+        }
       });
   };
 
@@ -37,17 +53,29 @@ function App() {
         <Content>
           <Form className="form">
             <FormTitle>Reach out to us!</FormTitle>
-            <FormInput type="text" name="name" placeholder='Your name*' onChange={
-              (e) => setName(e.target.value)
-            }>
+            <FormInput type="text" name="name" placeholder='Your name*' 
+              onChange={
+                (e) => setName(e.target.value)
+              }
+              changeBorder={nameInputBorder}
+              onFocus={() => setNameInputBorder(false)}
+            >
             </FormInput>
-            <FormInput type="text" name="email" placeholder='Your e-mail*' onChange={
-              (e) => setEmail(e.target.value)
-            }>
+            <FormInput type="text" name="email" placeholder='Your e-mail*'
+              onChange={
+                (e) => setEmail(e.target.value)
+              }
+              changeBorder={emailInputBorder}
+              onFocus={() => setEmailInputBorder(false)}
+            >
             </FormInput>
-            <FormTextarea type="text" name="message" placeholder='Your message*' className="message" onChange={
-              (e) => setMessage(e.target.value)
-            }>
+            <FormTextarea type="text" name="message" placeholder='Your message*' className="message" 
+              onChange={
+                (e) => setMessage(e.target.value)
+              }
+              changeBorder={messageInputBorder}
+              onFocus={() => setMessageInputBorder(false)}
+            >
             </FormTextarea>
             <FormButton onClick={submitFeedback}>Send message</FormButton>
           </Form>

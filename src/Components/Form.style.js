@@ -21,7 +21,7 @@ export const FormInput = styled.input`
     padding: 31px 46px;
     font-size: 18px;
     background: #fff;
-    border: 1px solid #DCDCDC;
+    border: ${(props) => props.changeBorder ? "1px solid red" : "1px solid #DCDCDC"};
     border-radius: 10px;
     line-height: 180%;
     &::placeholder {
