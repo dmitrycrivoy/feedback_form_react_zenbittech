@@ -17,6 +17,7 @@ export const FormTitle = styled.h1`
 `;
 
 export const FormInput = styled.input`
+    display: ${(props) => props.isShown ? "block" : "none"};
     margin-top: 8px;
     padding: 31px 46px;
     font-size: 18px;
@@ -27,14 +28,15 @@ export const FormInput = styled.input`
     &::placeholder {
         color: #2D2D2D;
     }
-`;
+    `;
 
 export const FormTextarea = styled.textarea`
+    display: ${(props) => props.isShown ? "block" : "none"};
     margin-top: 8px;
     padding: 31px 46px;
     font-size: 18px;
     background: #fff;
-    border: 1px solid #DCDCDC;
+    border: ${(props) => props.changeBorder ? "1px solid red" : "1px solid #DCDCDC"};
     border-radius: 10px;
     line-height: 180%;
     &::placeholder {
@@ -45,9 +47,10 @@ export const FormTextarea = styled.textarea`
     sans-serif;
     resize: none;
     padding: 31px 0 126px 46px;
-`;
+    `;
 
 export const FormButton = styled.button`
+    display: ${(props) => props.isShown ? "block" : "none"};
     margin-top: 23px;
     padding: 27px 52px;
     background-color: #FAD34F;

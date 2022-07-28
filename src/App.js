@@ -19,6 +19,10 @@ function App() {
   const [emailInputBorder, setEmailInputBorder] = useState(false);
   const [messageInputBorder, setMessageInputBorder] = useState(false);
 
+  const [title, setContent] = useState("Reach out to us!");
+
+  const [element, showElement] = useState(true);
+
   const submitFeedback = () => {
     Axios.post('http://qr96rq.alwaysdata.net/api/insert',
       {
@@ -27,19 +31,23 @@ function App() {
         message: message
       }
       ).then((res) => {
-        console.log(res);
-        console.log(res.data);
+        console.log(res.data.status)
         if (res.data.error) {
-          console.log(res.data.status)
-          if (res.data.status === 11) {
+          let statuses = res.data.status;
+          if (statuses.includes(11)) {
             setNameInputBorder(!nameInputBorder)
           }
-          else if (res.data.status === 12) {
+          if (statuses.includes(12)) {
             setEmailInputBorder(!emailInputBorder)
           }
-          else if (res.data.status === 13) {
+          if (statuses.includes(13)) {
             setMessageInputBorder(!messageInputBorder)
           }
+        }
+        else if (res.data.status === 0){
+          showElement(!element);
+          setContent("Thank you for the feedback!");
+          // dataAdded = false;
         }
       });
   };
@@ -52,14 +60,15 @@ function App() {
         </Cartoon>
         <Content>
           <Form className="form">
-            <FormTitle>Reach out to us!</FormTitle>
+            <FormTitle>{title}</FormTitle>
             <FormInput type="text" name="name" placeholder='Your name*' 
               onChange={
                 (e) => setName(e.target.value)
               }
               changeBorder={nameInputBorder}
               onFocus={() => setNameInputBorder(false)}
-            >
+              isShown={element}
+              >
             </FormInput>
             <FormInput type="text" name="email" placeholder='Your e-mail*'
               onChange={
@@ -67,7 +76,8 @@ function App() {
               }
               changeBorder={emailInputBorder}
               onFocus={() => setEmailInputBorder(false)}
-            >
+              isShown={element}
+              >
             </FormInput>
             <FormTextarea type="text" name="message" placeholder='Your message*' className="message" 
               onChange={
@@ -75,9 +85,10 @@ function App() {
               }
               changeBorder={messageInputBorder}
               onFocus={() => setMessageInputBorder(false)}
+              isShown={element}
             >
             </FormTextarea>
-            <FormButton onClick={submitFeedback}>Send message</FormButton>
+            <FormButton onClick={submitFeedback} isShown={element}>Send message</FormButton>
           </Form>
           <Map>
             <Cartoon bottom="272px" left="-45px" z-index="2">
