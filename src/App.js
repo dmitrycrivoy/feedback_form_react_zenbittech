@@ -31,7 +31,6 @@ function App() {
         message: message
       }
       ).then((res) => {
-        console.log(res.data.status)
         if (res.data.error) {
           let statuses = res.data.status;
           if (statuses.includes(11)) {
